@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<resources>
+
+    
+    <string name="app_name">Memory Game</string>
+    <string name="player_turn">Your Turn</string>
+    <string name="opponent_turn">Opponent\'s Turn</string>
+
+</resources>
