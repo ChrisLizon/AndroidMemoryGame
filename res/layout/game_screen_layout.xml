@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" android:background="#454545">
+
+    <LinearLayout
+        android:id="@+id/toptoolbarcontainer"
+        android:layout_width="fill_parent"
+        android:layout_height="50dip"
+        android:orientation="vertical" android:background="@drawable/toolbar_bg" android:gravity="center" android:layout_alignParentTop="true">
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name" android:textSize="24sp" android:textColor="#FFFFFF"/>
+
+    </LinearLayout>
+    
+    <LinearLayout
+        android:id="@+id/cardrow_container"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" android:layout_gravity="center" android:gravity="center" android:layout_centerInParent="true">
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:gravity="center_horizontal">
+
+            <ImageView
+                android:id="@+id/card_0"
+                android:layout_width="60dip"
+                android:layout_height="60dip"
+                android:src="@drawable/card_0" android:layout_margin="8dip" android:tag="0"/>
+
+            <ImageView
+                android:id="@+id/card_1"
+                android:layout_width="60dip"
+                android:layout_height="60dip"
+                android:src="@drawable/card_1" android:layout_margin="8dip" android:tag="1"/>
+
+            <ImageView
+                android:id="@+id/card_2"
+                android:layout_width="60dip"
+                android:layout_height="60dip"
+                android:src="@drawable/card_2" android:layout_margin="8dip" android:tag="2"/>
+
+            <ImageView
+                android:id="@+id/card_3"
+                android:layout_width="60dip"
+                android:layout_height="60dip"
+                android:src="@drawable/card_3" android:layout_margin="8dip" android:tag="3"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:gravity="center">
+            
+                        <ImageView
+                android:id="@+id/card_4"
+                android:layout_width="60dip"
+                android:layout_height="60dip"
+                android:src="@drawable/card_0" android:layout_margin="8dip" android:tag="4"/>
+
+            <ImageView
+                android:id="@+id/card_5"
+                android:layout_width="60dip"
+                android:layout_height="60dip"
+                android:src="@drawable/card_1" android:layout_margin="8dip" android:tag="5"/>
+
+            <ImageView
+                android:id="@+id/card_6"
+                android:layout_width="60dip"
+                android:layout_height="60dip"
+                android:src="@drawable/card_2" android:layout_margin="8dip" android:tag="6"/>
+
+            <ImageView
+                android:id="@+id/card_7"
+                android:layout_width="60dip"
+                android:layout_height="60dip"
+                android:src="@drawable/card_3" android:layout_margin="8dip" android:tag="7"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:gravity="center">
+            <ImageView
+                android:id="@+id/card_8"
+                android:layout_width="60dip"
+                android:layout_height="60dip"
+                android:src="@drawable/card_0" android:layout_margin="8dip" android:tag="8"/>
+
+            <ImageView
+                android:id="@+id/card_9"
+                android:layout_width="60dip"
+                android:layout_height="60dip"
+                android:src="@drawable/card_1" android:layout_margin="8dip" android:tag="9"/>
+
+            <ImageView
+                android:id="@+id/card_10"
+                android:layout_width="60dip"
+                android:layout_height="60dip"
+                android:src="@drawable/card_2" android:layout_margin="8dip" android:tag="10"/>
+
+            <ImageView
+                android:id="@+id/card_11"
+                android:layout_width="60dip"
+                android:layout_height="60dip"
+                android:src="@drawable/card_3" android:layout_margin="8dip" android:tag="11"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout5"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:gravity="center">
+            
+            <ImageView
+                android:id="@+id/card_12"
+                android:layout_width="60dip"
+                android:layout_height="60dip"
+                android:src="@drawable/card_0" android:layout_margin="8dip" android:tag="12"/>
+
+            <ImageView
+                android:id="@+id/card_13"
+                android:layout_width="60dip"
+                android:layout_height="60dip"
+                android:src="@drawable/card_1" android:layout_margin="8dip" android:tag="13"/>
+
+            <ImageView
+                android:id="@+id/card_14"
+                android:layout_width="60dip"
+                android:layout_height="60dip"
+                android:src="@drawable/card_2" android:layout_margin="8dip" android:tag="14"/>
+
+            <ImageView
+                android:id="@+id/card_15"
+                android:layout_width="60dip"
+                android:layout_height="60dip"
+                android:src="@drawable/card_3" android:layout_margin="8dip" android:tag="15"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bottomtoolbarcontainer"
+        android:layout_width="fill_parent"
+        android:layout_height="50dip"
+        android:orientation="vertical" android:layout_alignParentBottom="true" android:background="@drawable/toolbar_playerturn" android:gravity="center">
+
+        <TextView
+            android:id="@+id/turn_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/player_turn" android:textColor="#FFFFFF" android:textSize="24sp"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

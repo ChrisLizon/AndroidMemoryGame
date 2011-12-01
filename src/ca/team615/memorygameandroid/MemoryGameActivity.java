@@ -40,7 +40,7 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
+		setContentView(R.layout.game_screen_layout);
 
 		handler = new Handler();
 

@@ -12,7 +12,7 @@ public class MenuActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.menu);
+		setContentView(R.layout.menu_layout);
 
 		
 		Button singleButton = (Button)findViewById(R.id.single_player_button);
