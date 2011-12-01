@@ -144,6 +144,20 @@
                 android:src="@drawable/card_3" android:layout_margin="8dip" android:tag="15"/>
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/found_pairs_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Found Pairs"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/pairs_counter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
     </LinearLayout>
 
     <LinearLayout

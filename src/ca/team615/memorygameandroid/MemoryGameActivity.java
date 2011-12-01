@@ -5,6 +5,7 @@ import java.util.Random;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.widget.TextView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -19,9 +20,11 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 	private int[] drawableIds = {R.drawable.card_0, R.drawable.card_1, R.drawable.card_2, R.drawable.card_3,
 			R.drawable.card_4, R.drawable.card_5, R.drawable.card_6, R.drawable.card_7, R.drawable.card_back};
 
-	private int[] assignments;
+	private int[] assignments;	//Holds the assigned positions of the cards
 
 	private ImageView[] imageviews;
+	
+	private TextView foundPairsLabel;
 
 	/** the number of cards currently face up */
 	private int flippedCards;
@@ -45,6 +48,7 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 		handler = new Handler();
 
 		foundPairs = 0;
+		foundPairsLabel=(TextView)MemoryGameActivity.this.findViewById(R.id.pairs_counter);
 
 		//create a new array to hold the card positions
 		assignments = new int[16];
@@ -131,6 +135,8 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 				((ImageView)findViewById(viewIds[lastIndex])).setVisibility(View.INVISIBLE);
 				((ImageView)findViewById(viewIds[currentIndex])).setVisibility(View.INVISIBLE);
 				foundPairs++;
+//				foundPairsLabel=(TextView)MemoryGameActivity.this.findViewById(R.id.pairs_counter);
+				foundPairsLabel.setText(String.valueOf(foundPairs));
 			}else{
 				((ImageView)findViewById(viewIds[currentIndex])).setImageResource(R.drawable.card_back);
 				((ImageView)findViewById(viewIds[lastIndex])).setImageResource(R.drawable.card_back);
