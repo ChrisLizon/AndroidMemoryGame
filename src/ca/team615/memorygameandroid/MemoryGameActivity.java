@@ -24,7 +24,7 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 
 	private ImageView[] imageviews;
 	
-	private TextView foundPairsLabel;
+	
 
 	/** the number of cards currently face up */
 	private int flippedCards;
@@ -35,6 +35,10 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 	private int lastIndex = -1;
 
 	private int foundPairs = 0;
+	private TextView foundPairsLabel;
+	
+	private int turns_taken=0;
+	private TextView turns_taken_label;
 
 	Handler handler;
 
@@ -49,6 +53,7 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 
 		foundPairs = 0;
 		foundPairsLabel=(TextView)MemoryGameActivity.this.findViewById(R.id.pairs_counter);
+		turns_taken_label=(TextView)MemoryGameActivity.this.findViewById(R.id.turns);
 
 		//create a new array to hold the card positions
 		assignments = new int[16];
@@ -112,6 +117,9 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 		flippedCards++;
 
 		if(flippedCards == 2){
+			turns_taken++;
+			turns_taken_label.setText(String.valueOf(turns_taken));
+			
 			currentIndex = index;
 			
 			for(ImageView view:imageviews){
@@ -135,11 +143,11 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 				((ImageView)findViewById(viewIds[lastIndex])).setVisibility(View.INVISIBLE);
 				((ImageView)findViewById(viewIds[currentIndex])).setVisibility(View.INVISIBLE);
 				foundPairs++;
-//				foundPairsLabel=(TextView)MemoryGameActivity.this.findViewById(R.id.pairs_counter);
-				foundPairsLabel.setText(String.valueOf(foundPairs));
+				foundPairsLabel.setText(String.valueOf(foundPairs));	//Update label of matches
 			}else{
 				((ImageView)findViewById(viewIds[currentIndex])).setImageResource(R.drawable.card_back);
 				((ImageView)findViewById(viewIds[lastIndex])).setImageResource(R.drawable.card_back);
+				
 			}
 
 			for(ImageView view: imageviews){
