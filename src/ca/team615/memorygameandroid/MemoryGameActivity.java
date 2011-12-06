@@ -176,7 +176,7 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onPause() {
 		// TODO Auto-generated method stub
-		SoundManager.stopLoopedSound();
+		SoundManager.pauseLoopedSound();
 		super.onPause();
 	}
 
