@@ -58,6 +58,8 @@ public class SoundManager {
 		mSoundPool.play(i, volume, volume, 1, 0, 1f); 
 	}
 
+	private static int loopedSound = 0;
+	
 	public static int playLoopedSound(int index) { 
 		if(loopedSound == 0){
 			float streamVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
@@ -70,28 +72,13 @@ public class SoundManager {
 		}
 		return loopedSound;
 	}
-	private static int loopedSound = 0;
 
-	public static void stopLoopedSound(){
+	public static void pauseLoopedSound(){
 		System.out.println("Stopping " + loopedSound);
 		if(loopedSound != 0){
 			mSoundPool.pause(loopedSound);
 		}
 	}
 
-	public static void playSound_Delayed (final int soundId, final long millisec) {
-		// TIMER
-		final Handler mHandler = new Handler();
-		final Runnable mDelayedTimeTask = new Runnable() {
-
-			public void run() {
-
-				playLoopedSound(soundId);		
-
-			}
-		};
-		mHandler.postDelayed(mDelayedTimeTask, millisec); 
-		mDelayedTimeTask.run();
-	}
-
+	
 }
