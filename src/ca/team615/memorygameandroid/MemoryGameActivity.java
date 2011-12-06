@@ -26,6 +26,9 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 	private ImageView[] imageviews;
 	
 	SoundManager soundManager;
+	private static final int SOUND_FLIP = 1;
+	private static final int SOUND_FLOP = 2;
+	private static final int SOUND_BACKGROUND = 3;
 
 	/** the number of cards currently face up */
 	private int flippedCards;
@@ -49,6 +52,12 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.game_screen_layout);
+		
+		soundManager = new SoundManager();
+		soundManager.initSounds(getBaseContext());
+		soundManager.addSound(SOUND_FLIP, R.raw.flip);
+		soundManager.addSound(SOUND_FLOP, R.raw.flop);
+		soundManager.addSound(SOUND_BACKGROUND, R.raw.test2);
 
 		handler = new Handler();
 
@@ -97,10 +106,9 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 			((ImageView)findViewById(viewIds[i])).setImageResource(R.drawable.card_back);
 		}
 		
-		soundManager = new SoundManager();
-		soundManager.initSounds(getBaseContext());
-		soundManager.addSound(1, R.raw.whip02);
-		soundManager.addSound(2, R.raw.whip03);
+
+		//soundManager.playLoopedSound(SOUND_BACKGROUND);
+		//soundManager.playSound_Delayed(SOUND_BACKGROUND, 1000);
 
 	}
 
@@ -109,7 +117,7 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 		int index = Integer.parseInt((String)v.getTag());
 		System.out.println("index is " + index);
 		
-		soundManager.playSound(1);
+		soundManager.playSound(SOUND_FLIP);
 
 		for(int i =0; i < 16; i++)	{
 			//determine which id we're dealing with
@@ -149,7 +157,7 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 	
 	Runnable flipCardsBack = new Runnable() { 
 		public void run() { 
-			soundManager.playSound(2);
+			soundManager.playSound(SOUND_FLOP);
 			if(assignments[currentIndex] == assignments[lastIndex]){
 				((ImageView)findViewById(viewIds[lastIndex])).setVisibility(View.INVISIBLE);
 				((ImageView)findViewById(viewIds[currentIndex])).setVisibility(View.INVISIBLE);
@@ -169,5 +177,14 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 	};
 
 
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		soundManager.stopLoopedSound();
+		super.onPause();
+	}
+
+
+	
 }
 
