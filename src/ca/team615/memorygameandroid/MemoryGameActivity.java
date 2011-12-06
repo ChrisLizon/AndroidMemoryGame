@@ -1,5 +1,6 @@
 package ca.team615.memorygameandroid;
 
+import java.util.HashMap;
 import java.util.Random;
 
 import android.app.Activity;
@@ -24,7 +25,7 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 
 	private ImageView[] imageviews;
 	
-	
+	SoundManager soundManager;
 
 	/** the number of cards currently face up */
 	private int flippedCards;
@@ -95,6 +96,11 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 		for(int i = 0; i < 16; i++){
 			((ImageView)findViewById(viewIds[i])).setImageResource(R.drawable.card_back);
 		}
+		
+		soundManager = new SoundManager();
+		soundManager.initSounds(getBaseContext());
+		soundManager.addSound(1, R.raw.whip02);
+		soundManager.addSound(2, R.raw.whip03);
 
 	}
 
@@ -102,6 +108,8 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		int index = Integer.parseInt((String)v.getTag());
 		System.out.println("index is " + index);
+		
+		soundManager.playSound(1);
 
 		for(int i =0; i < 16; i++)	{
 			//determine which id we're dealing with
@@ -115,6 +123,8 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 			}
 		}	
 		flippedCards++;
+		
+		
 
 		if(flippedCards == 2){
 			turns_taken++;
@@ -139,6 +149,7 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 	
 	Runnable flipCardsBack = new Runnable() { 
 		public void run() { 
+			soundManager.playSound(2);
 			if(assignments[currentIndex] == assignments[lastIndex]){
 				((ImageView)findViewById(viewIds[lastIndex])).setVisibility(View.INVISIBLE);
 				((ImageView)findViewById(viewIds[currentIndex])).setVisibility(View.INVISIBLE);
