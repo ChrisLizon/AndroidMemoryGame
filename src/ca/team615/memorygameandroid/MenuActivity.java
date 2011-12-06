@@ -14,6 +14,9 @@ public class MenuActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.menu_layout);
 
+		SoundManager.getInstance();
+		SoundManager.initSounds(getBaseContext());
+		SoundManager.addSound(MemoryGameActivity.SOUND_BACKGROUND, R.raw.test2);
 		
 		Button singleButton = (Button)findViewById(R.id.single_player_button);
 		singleButton.setOnClickListener(new OnClickListener(){

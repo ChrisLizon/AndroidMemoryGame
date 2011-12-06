@@ -1,15 +1,14 @@
 package ca.team615.memorygameandroid;
 
-import java.util.HashMap;
 import java.util.Random;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
-import android.widget.TextView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class MemoryGameActivity extends Activity implements OnClickListener {
 
@@ -25,10 +24,9 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 
 	private ImageView[] imageviews;
 	
-	SoundManager soundManager;
 	private static final int SOUND_FLIP = 1;
 	private static final int SOUND_FLOP = 2;
-	private static final int SOUND_BACKGROUND = 3;
+	static final int SOUND_BACKGROUND = 3;
 
 	/** the number of cards currently face up */
 	private int flippedCards;
@@ -53,11 +51,8 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.game_screen_layout);
 		
-		soundManager = new SoundManager();
-		soundManager.initSounds(getBaseContext());
-		soundManager.addSound(SOUND_FLIP, R.raw.flip);
-		soundManager.addSound(SOUND_FLOP, R.raw.flop);
-		soundManager.addSound(SOUND_BACKGROUND, R.raw.test2);
+		SoundManager.addSound(SOUND_FLIP, R.raw.flip);
+		SoundManager.addSound(SOUND_FLOP, R.raw.flop);
 
 		handler = new Handler();
 
@@ -107,7 +102,8 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 		}
 		
 
-		//soundManager.playLoopedSound(SOUND_BACKGROUND);
+		SoundManager.playLoopedSound(SOUND_BACKGROUND);
+		
 		//soundManager.playSound_Delayed(SOUND_BACKGROUND, 1000);
 
 	}
@@ -117,7 +113,7 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 		int index = Integer.parseInt((String)v.getTag());
 		System.out.println("index is " + index);
 		
-		soundManager.playSound(SOUND_FLIP);
+		SoundManager.playSound(SOUND_FLIP);
 
 		for(int i =0; i < 16; i++)	{
 			//determine which id we're dealing with
@@ -157,7 +153,7 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 	
 	Runnable flipCardsBack = new Runnable() { 
 		public void run() { 
-			soundManager.playSound(SOUND_FLOP);
+			SoundManager.playSound(SOUND_FLOP);
 			if(assignments[currentIndex] == assignments[lastIndex]){
 				((ImageView)findViewById(viewIds[lastIndex])).setVisibility(View.INVISIBLE);
 				((ImageView)findViewById(viewIds[currentIndex])).setVisibility(View.INVISIBLE);
@@ -180,7 +176,7 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onPause() {
 		// TODO Auto-generated method stub
-		soundManager.stopLoopedSound();
+		SoundManager.stopLoopedSound();
 		super.onPause();
 	}
 
