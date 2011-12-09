@@ -3,6 +3,7 @@ package ca.team615.memorygameandroid;
 import java.util.Random;
 
 import android.app.Activity;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -23,10 +24,14 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 	private int[] assignments;	//Holds the assigned positions of the cards
 
 	private ImageView[] imageviews;
-	
+
 	private static final int SOUND_FLIP = 1;
 	private static final int SOUND_FLOP = 2;
 	static final int SOUND_BACKGROUND = 3;
+	private static final int SOUND_WINNER = 4;
+
+	private static final int NUM_PAIRS = 8;
+	
 
 	/** the number of cards currently face up */
 	private int flippedCards;
@@ -38,7 +43,7 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 
 	private int foundPairs = 0;
 	private TextView foundPairsLabel;
-	
+
 	private int turns_taken=0;
 	private TextView turns_taken_label;
 
@@ -50,9 +55,10 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.game_screen_layout);
-		
+
 		SoundManager.addSound(SOUND_FLIP, R.raw.flip);
 		SoundManager.addSound(SOUND_FLOP, R.raw.flop);
+		SoundManager.addSound(SOUND_WINNER, R.raw.test2);
 
 		handler = new Handler();
 
@@ -100,11 +106,7 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 		for(int i = 0; i < 16; i++){
 			((ImageView)findViewById(viewIds[i])).setImageResource(R.drawable.card_back);
 		}
-		
 
-		SoundManager.playLoopedSound(SOUND_BACKGROUND);
-		
-		//soundManager.playSound_Delayed(SOUND_BACKGROUND, 1000);
 
 	}
 
@@ -112,7 +114,7 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		int index = Integer.parseInt((String)v.getTag());
 		System.out.println("index is " + index);
-		
+
 		SoundManager.playSound(SOUND_FLIP);
 
 		for(int i =0; i < 16; i++)	{
@@ -127,42 +129,48 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 			}
 		}	
 		flippedCards++;
-		
-		
+
+
 
 		if(flippedCards == 2){
 			turns_taken++;
 			turns_taken_label.setText(String.valueOf(turns_taken));
-			
+
 			currentIndex = index;
-			
+
 			for(ImageView view:imageviews){
 				view.setFocusable(false);
 				view.setClickable(false);
 			}
 
 			flippedCards = 0;
-			
-			handler.postDelayed(flipCardsBack, 1000); 
 
+			handler.postDelayed(flipCardsBack, 1000); 
+			
 		}else{
 			lastIndex = index;
 		}
 
 	}
-	
+
 	Runnable flipCardsBack = new Runnable() { 
 		public void run() { 
 			SoundManager.playSound(SOUND_FLOP);
 			if(assignments[currentIndex] == assignments[lastIndex]){
 				((ImageView)findViewById(viewIds[lastIndex])).setVisibility(View.INVISIBLE);
 				((ImageView)findViewById(viewIds[currentIndex])).setVisibility(View.INVISIBLE);
+
 				foundPairs++;
 				foundPairsLabel.setText(String.valueOf(foundPairs));	//Update label of matches
+
+				if(foundPairs == NUM_PAIRS){
+					SoundManager.playLoopedSound(SOUND_WINNER);
+				}
+				
 			}else{
 				((ImageView)findViewById(viewIds[currentIndex])).setImageResource(R.drawable.card_back);
 				((ImageView)findViewById(viewIds[lastIndex])).setImageResource(R.drawable.card_back);
-				
+
 			}
 
 			for(ImageView view: imageviews){
@@ -174,13 +182,23 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 
 
 	@Override
+	protected void onResume() {
+		setVolumeControlStream(AudioManager.STREAM_MUSIC);
+		if(ConfigActivity.getBgMusicEnabled(this)){
+			SoundManager.playLoopedSound(SOUND_BACKGROUND);
+		}
+		super.onResume();
+	}
+
+	@Override
 	protected void onPause() {
 		// TODO Auto-generated method stub
-		SoundManager.pauseLoopedSound();
+		SoundManager.pauseLoopedSound(SOUND_BACKGROUND);
+		SoundManager.pauseLoopedSound(SOUND_WINNER);
 		super.onPause();
 	}
 
 
-	
+
 }
 

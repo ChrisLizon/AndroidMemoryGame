@@ -6,5 +6,8 @@
     <string name="player_turn">Your Turn</string>
     <string name="opponent_turn">Opponent\'s Turn</string>
     <string name="single_player_button_label">Single Player</string>
+    
+    <string name="config_backgroundmusic">Enable Background Music</string>
+    <string name="config_windowtitle">Memory Game Configuration</string>
 
 </resources>

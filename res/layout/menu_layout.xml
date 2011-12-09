@@ -30,10 +30,10 @@
             android:text="High Scores" />
 
         <Button
-            android:id="@+id/info_button"
+            android:id="@+id/menu_settings_button"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Info"/>
+            android:text="Settings"/>
     </LinearLayout>
 
 </RelativeLayout>

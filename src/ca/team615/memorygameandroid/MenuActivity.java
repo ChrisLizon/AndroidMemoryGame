@@ -30,6 +30,18 @@ public class MenuActivity extends Activity {
 			
 		});
 		
+		Button configButton = (Button)findViewById(R.id.menu_settings_button);
+		configButton.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(MenuActivity.this, ConfigActivity.class);
+				MenuActivity.this.startActivity(i);
+				
+			}
+			
+		});
+		
 
 	}
 }

@@ -16,6 +16,7 @@ public class SoundManager {
 
 	private static SoundPool mSoundPool; 
 	private static HashMap<Integer, Integer> mSoundPoolMap; 
+	private static HashMap<Integer, Integer> loopedSoundMap;
 	private static AudioManager  mAudioManager;
 	private static Context mContext;
 
@@ -40,6 +41,7 @@ public class SoundManager {
 		mContext = theContext;
 		mSoundPool = new SoundPool(10, AudioManager.STREAM_SYSTEM, 0); 
 		mSoundPoolMap = new HashMap<Integer, Integer>(); 
+		loopedSoundMap = new HashMap<Integer, Integer>();
 		mAudioManager = (AudioManager)mContext.getSystemService(Context.AUDIO_SERVICE); 	     
 	} 
 
@@ -57,23 +59,35 @@ public class SoundManager {
 		System.out.println("Found " + i);
 		mSoundPool.play(i, volume, volume, 1, 0, 1f); 
 	}
-
-	private static int loopedSound = 0;
 	
 	public static int playLoopedSound(int index) { 
+		int loopedSound;
+		try{
+			loopedSound = loopedSoundMap.get(index);
+		}catch(NullPointerException e){
+			loopedSound = 0;
+		}
+		
 		if(loopedSound == 0){
 			float streamVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
 			float streamMaxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
 			float volume = (float)(streamVolume / streamMaxVolume * backgroundVolume);
 			loopedSound = mSoundPool.play(mSoundPoolMap.get(index), volume, volume, 1, -1, 1f);
 			System.out.println("Looped Sound is " + loopedSound);
+			loopedSoundMap.put(index, loopedSound);
 		}else{
 			mSoundPool.resume(loopedSound);
 		}
 		return loopedSound;
 	}
 
-	public static void pauseLoopedSound(){
+	public static void pauseLoopedSound(int soundId){
+		
+		int loopedSound;
+		try{loopedSound = loopedSoundMap.get(soundId);
+		}catch(NullPointerException e){
+			loopedSound = 0;
+		}
 		System.out.println("Stopping " + loopedSound);
 		if(loopedSound != 0){
 			mSoundPool.pause(loopedSound);

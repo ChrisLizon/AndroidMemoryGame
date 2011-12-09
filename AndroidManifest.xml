@@ -24,6 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:label="@string/config_windowtitle" android:name="ConfigActivity"></activity>
     </application>
 
 </manifest>
