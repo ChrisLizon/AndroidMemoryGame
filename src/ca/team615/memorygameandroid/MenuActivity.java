@@ -30,6 +30,20 @@ public class MenuActivity extends Activity {
 			
 		});
 		
+		Button multiButton = (Button)findViewById(R.id.multi_player_button);
+		multiButton.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(MenuActivity.this, NetworkGameActivity.class);
+				i.putExtra("address", "10.121.227.73");
+				i.putExtra("port", 9999);
+				MenuActivity.this.startActivity(i);
+				
+			}
+			
+		});
+		
 		Button configButton = (Button)findViewById(R.id.menu_settings_button);
 		configButton.setOnClickListener(new OnClickListener(){
 

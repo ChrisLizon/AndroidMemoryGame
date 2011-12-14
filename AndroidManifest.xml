@@ -5,6 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk android:minSdkVersion="7" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:icon="@drawable/ic_launcher"
@@ -25,6 +26,8 @@
             </intent-filter>
         </activity>
         <activity android:label="@string/config_windowtitle" android:name="ConfigActivity"></activity>
+        <activity android:name="NetworkGameActivity"
+            android:theme="@android:style/Theme.NoTitleBar" android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
