@@ -151,18 +151,18 @@
 
             <TextView
                 android:id="@+id/found_pairs_label"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="Pairs Found"
-                android:textAppearance="?android:attr/textAppearanceMedium" android:layout_weight="1" android:gravity="center_horizontal"/>
+                android:textAppearance="?android:attr/textAppearanceMedium" android:layout_weight="1" android:gravity="center"/>
 
             <TextView
                 android:id="@+id/turns_label"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Turns Taken"
-                android:textAppearance="?android:attr/textAppearanceMedium" android:gravity="center_horizontal"/>
+                android:textAppearance="?android:attr/textAppearanceMedium" android:gravity="center"/>
 
         </LinearLayout>
 
@@ -173,18 +173,18 @@
 
             <TextView
                 android:id="@+id/pairs_counter"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="0"
-                android:textAppearance="?android:attr/textAppearanceLarge" android:layout_weight="1" android:gravity="center_horizontal"/>
+                android:textAppearance="?android:attr/textAppearanceLarge" android:layout_weight="1" android:gravity="center"/>
 
             <TextView
                 android:id="@+id/turns"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="0"
-                android:textAppearance="?android:attr/textAppearanceLarge" android:gravity="center_horizontal"/>
+                android:textAppearance="?android:attr/textAppearanceLarge" android:gravity="center"/>
 
         </LinearLayout>
 

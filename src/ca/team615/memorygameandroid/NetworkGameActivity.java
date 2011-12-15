@@ -6,7 +6,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
 import android.app.Activity;
@@ -112,7 +115,7 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 		}
 		
 		//TODO THIS NEEDS TO BE A STRING RESOURCE
-		progressDlg = ProgressDialog.show(this, "Waiting..", "Waiting for the other player", true);
+		progressDlg = ProgressDialog.show(this, "Waiting..", "Trying to connect", true);
 		progressDlg.setCancelable(true);
 		
 		disableCards();
@@ -192,6 +195,10 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 		flippedCards = 0;
 	}
 	
+	void updateProgress(){
+		progressDlg.setMessage("Waiting for the other player");
+	}
+	
 	void removeProgress(){
 		progressDlg.hide();
 	}
@@ -263,7 +270,31 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 			try {
 				//TODO This probably has to go into a thread
 				System.out.println("Trying to connect to socket");
-				socket = new Socket(connectAddress, connectPort);
+				InetSocketAddress addr = new InetSocketAddress(connectAddress, connectPort);
+				
+				socket = new Socket();
+				int attempts = 15;
+				for(int i = 1; i <= attempts; i++){
+					
+					try{
+					socket.connect(addr, 1000);
+					}catch(SocketException e){
+					}catch(SocketTimeoutException e){}
+					
+					System.out.println("WhAZZUP?");
+					if(socket.isConnected()){
+						break;
+					}else{
+						if(i == attempts){
+							//TODO Can't Connect
+							System.out.println("Couldn't Connect");
+							return;
+						}else{
+							socket = new Socket();
+						}
+					}
+				}
+				
 				System.out.println("Connected to socket");
 			} catch (UnknownHostException e) {
 				// TODO Auto-generated catch block
@@ -283,6 +314,12 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 				e.printStackTrace();
 			}
 
+			handler.post(new Runnable(){
+				@Override
+				public void run() {
+					updateProgress();
+				}});
+			
 			while(true){
 				System.out.println("Waiting for a command");
 				String command;
