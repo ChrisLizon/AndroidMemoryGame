@@ -6,14 +6,18 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-public class NetworkStartActivity extends Activity implements OnClickListener {
+public class NetworkStartActivity extends Activity implements OnClickListener, OnCheckedChangeListener {
 	
 	RadioButton hostButton;
 	RadioButton joinButton;
+	
+	Button startButton;
 	
 	EditText networkPort;
 	EditText networkHost;
@@ -26,20 +30,21 @@ public class NetworkStartActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.network_start_layout);
 
-		
-		hostButton = (RadioButton)findViewById(R.id.radio_host);
-		hostButton.setEnabled(false);
-		joinButton = (RadioButton)findViewById(R.id.radio_join);
-		joinButton.setEnabled(true);
-		joinButton.setSelected(true);
+		startButton = (Button)findViewById(R.id.network_start_button);
+		startButton.setOnClickListener(this);
 		
 		networkHost = (EditText) findViewById(R.id.network_host);
 		networkPort = (EditText) findViewById(R.id.network_port);
-	
-		Button startButton = (Button)findViewById(R.id.network_start_button);
-		startButton.setOnClickListener(this);
-
-
+		
+		hostButton = (RadioButton)findViewById(R.id.radio_host);
+		//hostButton.setEnabled(false);
+		hostButton.setOnCheckedChangeListener(this);
+		joinButton = (RadioButton)findViewById(R.id.radio_join);
+		
+		joinButton.setOnCheckedChangeListener(this);
+		joinButton.setEnabled(true);
+		joinButton.setChecked(true);
+		
 		
 	}
 	
@@ -56,6 +61,24 @@ public class NetworkStartActivity extends Activity implements OnClickListener {
 			i.putExtra("port", Integer.parseInt(networkPort.getText().toString()));
 		}
 		NetworkStartActivity.this.startActivity(i);
+		
+	}
+
+
+	@Override
+	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+		if(!isChecked){
+			return;
+		}
+		if(buttonView == joinButton){
+			networkPort.setVisibility(View.VISIBLE);
+			networkHost.setVisibility(View.VISIBLE);
+			startButton.setText(R.string.multiplayer_join);
+		}else{
+			networkPort.setVisibility(View.GONE);
+			networkHost.setVisibility(View.GONE);
+			startButton.setText(R.string.multiplayer_host);
+		}
 		
 	}
 }

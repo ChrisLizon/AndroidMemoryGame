@@ -10,4 +10,6 @@
     <string name="config_backgroundmusic">Enable Background Music</string>
     <string name="config_windowtitle">Memory Game Configuration</string>
 
+    <string name="multiplayer_join">Join Game</string>
+    <string name="multiplayer_host">Start Game</string>
 </resources>

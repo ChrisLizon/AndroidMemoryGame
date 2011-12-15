@@ -60,6 +60,6 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="30dp"
-        android:text="Start Game" />
+        android:text="@string/multiplayer_host" />
 
 </RelativeLayout>
