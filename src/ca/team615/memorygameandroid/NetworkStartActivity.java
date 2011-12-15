@@ -8,6 +8,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 public class NetworkStartActivity extends Activity implements OnClickListener {
 	
@@ -17,16 +18,20 @@ public class NetworkStartActivity extends Activity implements OnClickListener {
 	EditText networkPort;
 	EditText networkHost;
 	
+	
+	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.network_start_layout);
 
+		
 		hostButton = (RadioButton)findViewById(R.id.radio_host);
 		hostButton.setEnabled(false);
 		joinButton = (RadioButton)findViewById(R.id.radio_join);
 		joinButton.setEnabled(true);
+		joinButton.setSelected(true);
 		
 		networkHost = (EditText) findViewById(R.id.network_host);
 		networkPort = (EditText) findViewById(R.id.network_port);

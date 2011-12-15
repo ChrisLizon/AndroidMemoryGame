@@ -51,7 +51,7 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 	InputStream iStream = null;
 	BufferedReader reader = null;
 
-
+	int flippedCards = 0;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -151,7 +151,7 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 
 	@Override
 	public void onBackPressed() {
-		
+		//TODO Confirm quit
 		super.onBackPressed();
 	}
 
@@ -168,6 +168,12 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 		System.out.println("Clicked " + index);
 		try{
 			writer.println("select " + index);
+			flippedCards++;
+			v.setClickable(false);
+			v.setFocusable(false);
+			if(flippedCards == 2){
+				disableCards();
+			}
 			writer.flush();
 		}catch(Exception e){
 			e.printStackTrace();
@@ -212,6 +218,7 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 		}
 		((LinearLayout)findViewById(R.id.bottomtoolbarcontainer)).setBackgroundResource(R.drawable.toolbar_playerturn);
 		((TextView)findViewById(R.id.turn_indicator)).setText(R.string.player_turn);
+		flippedCards = 0;
 	}
 
 	/**
@@ -248,13 +255,13 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 
 	@Override
 	protected void onResume() {
-
+		//TODO let the server know that the game has gained foreground
 		super.onResume();
 	}
 
 	@Override
 	protected void onPause() {
-
+		//TODO let the server know that the game has lost foreground
 		super.onPause();
 	}
 
@@ -318,7 +325,9 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					System.out.println("Server Closed Connection.");
+					break;
+					//e.printStackTrace();
 				}
 
 			}
