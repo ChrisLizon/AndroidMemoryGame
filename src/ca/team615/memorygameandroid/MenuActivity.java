@@ -35,9 +35,7 @@ public class MenuActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(MenuActivity.this, NetworkGameActivity.class);
-				i.putExtra("address", "10.121.227.73");
-				i.putExtra("port", 9999);
+				Intent i = new Intent(MenuActivity.this, NetworkStartActivity.class);
 				MenuActivity.this.startActivity(i);
 				
 			}

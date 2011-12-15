@@ -16,6 +16,7 @@ import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class NetworkGameActivity extends Activity implements OnClickListener {
@@ -197,6 +198,8 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 			view.setFocusable(false);
 			view.setClickable(false);
 		}
+		((LinearLayout)findViewById(R.id.bottomtoolbarcontainer)).setBackgroundResource(R.drawable.toolbar_bg);
+		((TextView)findViewById(R.id.turn_indicator)).setText("");
 	}
 
 	/**
@@ -207,6 +210,8 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 			view.setFocusable(true);
 			view.setClickable(true);
 		}
+		((LinearLayout)findViewById(R.id.bottomtoolbarcontainer)).setBackgroundResource(R.drawable.toolbar_playerturn);
+		((TextView)findViewById(R.id.turn_indicator)).setText(R.string.player_turn);
 	}
 
 	/**
@@ -236,8 +241,8 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 	 * @param opponent
 	 */
 	private void updateScores(int player, int opponent){
-		opponentPairsLabel.setText(opponent);
-		playerPairsLabel.setText(player);
+		opponentPairsLabel.setText(Integer.toString(opponent));
+		playerPairsLabel.setText(Integer.toString(player));
 	}
 
 
@@ -268,16 +273,48 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 					}else if(command.startsWith("flip")){
 						final int index = Integer.parseInt(command.substring(5, command.length()));
 						handler.post(new Runnable(){
-
 							@Override
 							public void run() {
 								flipCard(index);
 
-							}
+							}});
+					}else if(command.startsWith("disableall")){
+						handler.post(new Runnable(){
+							@Override
+							public void run() {
+								disableCards();
 
-						});
+							}});
+					}else if(command.startsWith("enableall")){
+						handler.post(new Runnable(){
+							@Override
+							public void run() {
+								enableCards();
 
+							}});
+					}else if(command.startsWith("flop")){
+						final String[] parts = command.split(" ");
+						handler.post(new Runnable(){
+							@Override
+							public void run() {
+								flipCardsBack(Integer.parseInt(parts[1]), Integer.parseInt(parts[2]), false);
+							}});
+					}else if(command.startsWith("remove")){
+						final String[] parts = command.split(" ");
+						handler.post(new Runnable(){
+							@Override
+							public void run() {
+								flipCardsBack(Integer.parseInt(parts[1]), Integer.parseInt(parts[2]), true);
+							}});
+					}else if(command.startsWith("score")){
+						final String[] parts = command.split(" ");
+						handler.post(new Runnable(){
+							@Override
+							public void run() {
+								updateScores(Integer.parseInt(parts[1]), Integer.parseInt(parts[2]));
+							}});
 					}
+					
 
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
