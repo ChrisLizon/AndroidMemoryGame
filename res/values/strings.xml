@@ -7,11 +7,21 @@
     <string name="opponent_turn">Opponent\'s Turn</string>
     <string name="single_player_button_label">Single Player</string>
     
+    <string name="turns_label">Turns Taken</string>
+    <string name="pairs_label">Pairs Found</string>
+    <string name="playerscore_label">Your Score</string>
+    <string name="opponentscore_label">Opponent\'s Score</string>
+    
     <string name="config_backgroundmusic">Enable Background Music</string>
     <string name="config_windowtitle">Memory Game Configuration</string>
 
     <string name="multiplayer_join">Join Game</string>
     <string name="multiplayer_host">Start Game</string>
+    
+    <string name="dialog_title_waitin">Waiting..</string>
+    <string name="dialog_message_connect">Connecting to the server</string>
+    <string name="dialog_message_wait_opponent">Waiting for other player</string>
+    
     
     <string name="badport">Invalid Port</string>
     

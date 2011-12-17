@@ -29,6 +29,7 @@
             android:theme="@android:style/Theme.NoTitleBar" android:screenOrientation="portrait"></activity>
         <activity android:name="NetworkStartActivity"
               android:theme="@android:style/Theme.NoTitleBar" android:screenOrientation="portrait"></activity>
+        <service android:name="GameHostService"></service>
     </application>
 
 </manifest>

@@ -75,6 +75,10 @@ public class NetworkStartActivity extends Activity implements OnClickListener, O
 	public void onClick(View v) {
 		Intent i = new Intent(NetworkStartActivity.this, NetworkGameActivity.class);
 		if(hostButton.isChecked()){
+			
+			Intent service = new Intent(this, GameHostService.class);
+			this.startService(service);
+			
 			i.putExtra("address", "127.0.0.1");
 			i.putExtra("port", 9999);
 		}else{

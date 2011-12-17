@@ -60,7 +60,7 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 		SoundManager.getInstance();
 		SoundManager.addSound(SOUND_FLIP, R.raw.flip);
 		SoundManager.addSound(SOUND_FLOP, R.raw.flop);
-		SoundManager.addSound(SOUND_WINNER, R.raw.test2);
+		SoundManager.addSound(SOUND_WINNER, R.raw.win);
 
 		handler = new Handler();
 

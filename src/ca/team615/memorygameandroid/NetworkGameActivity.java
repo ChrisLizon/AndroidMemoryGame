@@ -10,7 +10,6 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
-import java.net.UnknownHostException;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -19,6 +18,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -26,6 +26,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class NetworkGameActivity extends Activity implements OnClickListener {
+
+	private static final String tag = "NetworkGame";
 
 	private int[] viewIds = {R.id.card_0, R.id.card_1, R.id.card_2, R.id.card_3,
 			R.id.card_4, R.id.card_5, R.id.card_6, R.id.card_7,
@@ -42,12 +44,14 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 	private static final int SOUND_FLIP = 1;
 	private static final int SOUND_FLOP = 2;
 	static final int SOUND_BACKGROUND = 3;
-	private static final int SOUND_WINNER = 4;
+	static final int SOUND_WINNER = 4;
 
 	/** the number of cards currently face up */
 
 	private TextView playerPairsLabel;
 	private TextView opponentPairsLabel;
+
+	boolean quitting = false;
 
 	Handler handler;
 
@@ -72,11 +76,6 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.game_screen_layout);
 
-		SoundManager.getInstance();
-		SoundManager.addSound(SOUND_FLIP, R.raw.flip);
-		SoundManager.addSound(SOUND_FLOP, R.raw.flop);
-		SoundManager.addSound(SOUND_WINNER, R.raw.test2);
-
 		handler = new Handler();
 
 		connectAddress = "";
@@ -89,12 +88,10 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 			e.printStackTrace();
 		}
 
-		//TODO THIS NEEDS TO BE A STRING RESOURCE
-		((TextView)this.findViewById(R.id.found_pairs_label)).setText("Your Score");
+		((TextView)this.findViewById(R.id.found_pairs_label)).setText(R.string.playerscore_label);
 		playerPairsLabel=(TextView)NetworkGameActivity.this.findViewById(R.id.pairs_counter);
 
-		//TODO THIS NEEDS TO BE A STRING RESOURCE
-		((TextView)this.findViewById(R.id.turns_label)).setText("Opponent Score");
+		((TextView)this.findViewById(R.id.turns_label)).setText(R.string.opponentscore_label);
 		opponentPairsLabel=(TextView)NetworkGameActivity.this.findViewById(R.id.turns);
 
 		//create a new array to hold the card positions
@@ -117,8 +114,10 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 			((ImageView)findViewById(viewIds[i])).setImageResource(R.drawable.card_back);
 		}
 
-		//TODO THIS NEEDS TO BE A STRING RESOURCE
-		progressDlg = ProgressDialog.show(this, "Waiting..", "Trying to connect", true);
+		progressDlg = null;
+		progressDlg = ProgressDialog.show(this,
+				this.getString(R.string.dialog_title_waitin),
+				this.getString(R.string.dialog_message_connect), true);
 		progressDlg.setCancelable(true);
 
 		disableCards();
@@ -146,6 +145,7 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 	}
 
 	public void quit(){
+		quitting = true;
 		writer.println("quit");
 		writer.flush();
 		try{
@@ -170,7 +170,7 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 				break;
 			}
 		}
-		System.out.println("Clicked " + index);
+		Log.i(tag, "Clicked " + index);
 		try{
 			writer.println("select " + index);
 			flippedCards++;
@@ -191,10 +191,9 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 	 */
 	void flipCard(int index){
 
-		System.out.println("Flipping card " + index);
 
 		SoundManager.playSound(SOUND_FLIP);
-		System.out.println("Showing card " +assignments[index]);
+		Log.i(tag, "Showing card " +assignments[index] + " at position " + index);
 		((ImageView)findViewById(viewIds[index])).setImageResource(drawableIds[assignments[index]]);
 		imageviews[index].setFocusable(false);
 		imageviews[index].setClickable(false);
@@ -231,7 +230,8 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 	}
 
 	void removeProgress(){
-		progressDlg.hide();
+		progressDlg.dismiss();
+		progressDlg = null;
 	}
 
 	/**
@@ -255,6 +255,18 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 
 	} 
 
+	private void win(){
+
+	}
+
+	private void lose(){
+
+	}
+
+	private void draw(){
+
+	}
+
 	/**
 	 * Update the scores on the screen.
 	 * @param player
@@ -269,17 +281,36 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
+
+		SoundManager.getInstance();
+		SoundManager.addSound(SOUND_FLIP, R.raw.flip);
+		SoundManager.addSound(SOUND_FLOP, R.raw.flop);
+		//SoundManager.addSound(SOUND_WINNER, R.raw.test2);
+
 		if(socket != null){
-		writer.println("resume");
-		writer.flush();
+			writer.println("resume");
+			writer.flush();
 		}
 	}
+
 	/** To be called when the socket gets screwed over. */
 	private void connectionClosed(){
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(R.string.network_lostconnection)
+		.setCancelable(false)
+		.setNeutralButton("Quit", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				NetworkGameActivity.this.finish();
+			}
+		});
+
+		AlertDialog alert =	builder.create();
+		if(progressDlg != null)
+			progressDlg.dismiss();
+		alert.show();
 
 	}
-	
+
 	/** To be called when there's not connection to the server */
 	private void noConnection(){
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -290,11 +321,18 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 				NetworkGameActivity.this.finish();
 			}
 		});
-		
+
 		AlertDialog alert =	builder.create();
-		progressDlg.dismiss();
+		if(progressDlg != null)
+			progressDlg.dismiss();
 		alert.show();
-		
+
+	}
+
+	@Override
+	protected void onStop() {
+		progressDlg.dismiss();
+		super.onStop();
 	}
 
 	@Override
@@ -307,13 +345,13 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 	}
 
 	protected void assignCards(String raw){
-		System.out.println(raw);
+		Log.i(tag, raw);
 		String[] values = raw.split(" ");
 		for(int i = 1; i < values.length; i++){
 			assignments[i-1] = Integer.parseInt(values[i]);
-			System.out.println("Card " + i + " is " + assignments[i-1]);
+			Log.i(tag, "Card " + i + " is " + assignments[i-1]);
 		}
-		System.out.println("Saved assignments");
+		Log.i(tag, "Saved assignments");
 	}
 
 	private class InputHandler implements Runnable{
@@ -322,47 +360,40 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 		@Override
 		public void run() {
 
-			try {
-				//TODO This probably has to go into a thread
-				System.out.println("Trying to connect to socket");
-				InetSocketAddress addr = new InetSocketAddress(connectAddress, connectPort);
+			//try {
+			Log.i(tag, "Trying to connect to socket");
+			InetSocketAddress addr = new InetSocketAddress(connectAddress, connectPort);
 
-				socket = new Socket();
-				int attempts = 6;
-				for(int i = 1; i <= attempts; i++){
+			socket = new Socket();
+			int attempts = 6;
+			for(int i = 1; i <= attempts; i++){
 
-					try{
-						socket.connect(addr, 1000 * i);
-					}catch(SocketException e){
-					}catch(SocketTimeoutException e){}
-
-					System.out.println("Attempt " + i + " failed.");
-					if(socket.isConnected()){
-						break;
-					}else{
-						if(i == attempts){
-							//TODO Can't Connect
-							System.out.println("Couldn't Connect");
-							handler.post(new Runnable(){
-								@Override
-								public void run() {
-									noConnection();
-								}});
-							return;
-						}else{
-							socket = new Socket();
-						}
-					}
+				try{
+					socket.connect(addr, 1000 * i);
+				}catch(SocketException e){
+				}catch(SocketTimeoutException e){
+				}catch(IOException e) {
 				}
 
-				System.out.println("Connected to socket");
-			} catch (UnknownHostException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Log.i(tag, "Attempt " + i + " failed.");
+				if(socket.isConnected()){
+					break;
+				}else{
+					if(i == attempts){
+						Log.i(tag, "Couldn't Connect");
+						handler.post(new Runnable(){
+							@Override
+							public void run() {
+								noConnection();
+							}});
+						return;
+					}else{
+						socket = new Socket();
+					}
+				}
 			}
+
+			Log.i(tag, "Connected to socket");
 
 			try {
 				iStream = socket.getInputStream();
@@ -370,8 +401,7 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 				oStream = socket.getOutputStream();
 				writer = new PrintWriter(oStream);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				//this may have to be expanded later. 
 			}
 
 			handler.post(new Runnable(){
@@ -381,13 +411,17 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 				}});
 
 			while(true){
-				System.out.println("Waiting for a command");
+				Log.i(tag, "Waiting for a command");
 				String command;
 				try {
 					command = reader.readLine();
 					if(command.startsWith("quit")){
+						handler.post(new Runnable(){
+							@Override
+							public void run() {
+								connectionClosed();
+							}});
 						break;
-						//TODO quit?
 					}else if(command.startsWith("loaded")){
 						handler.post(new Runnable(){
 							@Override
@@ -424,6 +458,27 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 								enableCards();
 
 							}});
+					}else if(command.startsWith("win")){
+						handler.post(new Runnable(){
+							@Override
+							public void run() {
+								win();
+
+							}});
+					}else if(command.startsWith("lose")){
+						handler.post(new Runnable(){
+							@Override
+							public void run() {
+								lose();
+
+							}});
+					}else if(command.startsWith("draw")){
+						handler.post(new Runnable(){
+							@Override
+							public void run() {
+								draw();
+
+							}});
 					}else if(command.startsWith("flop")){
 						final String[] parts = command.split(" ");
 						handler.post(new Runnable(){
@@ -449,13 +504,13 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 
 
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					System.out.println("Server Closed Connection.");
-					handler.post(new Runnable(){
-						@Override
-						public void run() {
-							connectionClosed();
-						}});
+					Log.i(tag, "Server Closed Connection.");
+					if(!quitting)
+						handler.post(new Runnable(){
+							@Override
+							public void run() {
+								connectionClosed();
+							}});
 					break;
 
 				}
