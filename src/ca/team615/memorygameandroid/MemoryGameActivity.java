@@ -57,7 +57,7 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.game_screen_layout);
-
+		SoundManager.getInstance();
 		SoundManager.addSound(SOUND_FLIP, R.raw.flip);
 		SoundManager.addSound(SOUND_FLOP, R.raw.flop);
 		SoundManager.addSound(SOUND_WINNER, R.raw.test2);

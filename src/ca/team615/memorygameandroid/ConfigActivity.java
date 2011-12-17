@@ -12,6 +12,8 @@ public class ConfigActivity extends Activity {
 	
 	private static final String PREFS_NAME = "net.team615.memorygame.prefs";
 	private static final String PREFS_BGMUSICON_KEY = "bmusicon";
+	private static final String PREFS_SAVEHOST_KEY = "savedhost";
+	private static final String PREFS_SAVEPORT_KEY = "saveport";
 	
 	SharedPreferences prefs;
 	SharedPreferences.Editor prefsWriter;
@@ -46,6 +48,29 @@ public class ConfigActivity extends Activity {
 	public static boolean getBgMusicEnabled(Context context){
 		SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
 		return prefs.getBoolean(PREFS_BGMUSICON_KEY, true);
+	}
+
+	public static int getSavedPort(Context context) {
+		SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
+		return prefs.getInt(PREFS_SAVEPORT_KEY, 0);
+		
+	}
+
+	public static String getSavedHost(Context context) {
+		SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
+		return prefs.getString(PREFS_SAVEHOST_KEY, "");
+	}
+	
+	public static void saveHost(Context context, String host){
+		SharedPreferences.Editor prefsWriter = context.getSharedPreferences(PREFS_NAME, 0).edit();
+		prefsWriter.putString(PREFS_SAVEHOST_KEY, host);
+		prefsWriter.commit();
+	}
+	
+	public static void savePort(Context context, int port){
+		SharedPreferences.Editor prefsWriter = context.getSharedPreferences(PREFS_NAME, 0).edit();
+		prefsWriter.putInt(PREFS_SAVEPORT_KEY, port);
+		prefsWriter.commit();
 	}
 }
 

@@ -10,7 +10,7 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.widget.Toast;
 
 public class NetworkStartActivity extends Activity implements OnClickListener, OnCheckedChangeListener {
 	
@@ -49,6 +49,28 @@ public class NetworkStartActivity extends Activity implements OnClickListener, O
 	}
 	
 	
+	
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		int port = 0;
+		String host = "";
+		
+		port = ConfigActivity.getSavedPort(this);
+		host = ConfigActivity.getSavedHost(this);
+		
+		networkHost.setText(host);
+		if(port == 0){
+			networkPort.setText("");
+		}else{
+			networkPort.setText(Integer.toString(port));
+		}
+	}
+
+
+
+
 	@Override
 	public void onClick(View v) {
 		Intent i = new Intent(NetworkStartActivity.this, NetworkGameActivity.class);
@@ -57,8 +79,21 @@ public class NetworkStartActivity extends Activity implements OnClickListener, O
 			i.putExtra("port", 9999);
 		}else{
 			//TODO ERROR CHECK THIS SHIT
-			i.putExtra("address", networkHost.getText().toString());
-			i.putExtra("port", Integer.parseInt(networkPort.getText().toString()));
+			int port = Integer.parseInt(networkPort.getText().toString());
+			String host = networkHost.getText().toString();
+			
+			if(port > 65535 || port < 0){
+				Toast toast = Toast.makeText(this, R.string.badport, Toast.LENGTH_SHORT);
+				toast.show();
+				return;
+			}
+			
+			i.putExtra("address", host);
+			i.putExtra("port", port);
+			
+			ConfigActivity.saveHost(this, host);
+			ConfigActivity.savePort(this, port);
+			
 		}
 		NetworkStartActivity.this.startActivity(i);
 		
