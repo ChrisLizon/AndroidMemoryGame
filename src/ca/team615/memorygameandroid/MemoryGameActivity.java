@@ -203,7 +203,7 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 	public void onBackPressed() {
 		//TODO Confirm quit
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage("Are you sure you want to exit?")
+		builder.setMessage(R.string.confirm_quit)
 		.setCancelable(false)
 		.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {

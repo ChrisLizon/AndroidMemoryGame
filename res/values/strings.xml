@@ -13,5 +13,12 @@
     <string name="multiplayer_join">Join Game</string>
     <string name="multiplayer_host">Start Game</string>
     
-        <string name="badport">Invalid Port</string>
+    <string name="badport">Invalid Port</string>
+    
+    <string name="confirm_quit">"Are you sure you want to exit?"</string>
+    
+    <string name="network_noconnection">Could not connect to server</string>
+    <string name="network_lostconnection">Lost connection to the server</string>
+    
+    
 </resources>

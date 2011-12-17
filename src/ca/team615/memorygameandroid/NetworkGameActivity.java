@@ -128,7 +128,6 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 
 	@Override
 	public void onBackPressed() {
-		//TODO Confirm quit
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage("Are you sure you want to exit?")
 		.setCancelable(false)
@@ -142,9 +141,8 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 				dialog.cancel();
 			}
 		});
-		//AlertDialog alert = 
-				builder.create();
-		//super.onBackPressed();
+		AlertDialog alert =	builder.create();
+		alert.show();
 	}
 
 	public void quit(){
@@ -270,17 +268,41 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 
 	@Override
 	protected void onResume() {
-		//TODO let the server know that the game has gained foreground
 		super.onResume();
+		
+		if(socket != null){
+		writer.println("resume");
+		writer.flush();
+		}
 	}
 	/** To be called when the socket gets screwed over. */
 	private void connectionClosed(){
 
 	}
+	
+	/** To be called when there's not connection to the server */
+	private void noConnection(){
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(R.string.network_noconnection)
+		.setCancelable(false)
+		.setNeutralButton("Quit", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				NetworkGameActivity.this.finish();
+			}
+		});
+		
+		AlertDialog alert =	builder.create();
+		progressDlg.dismiss();
+		alert.show();
+		
+	}
 
 	@Override
 	protected void onPause() {
-		//TODO let the server know that the game has lost foreground
+		if(socket != null){
+			writer.println("pause");
+			writer.flush();
+		}
 		super.onPause();
 	}
 
@@ -306,7 +328,7 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 				InetSocketAddress addr = new InetSocketAddress(connectAddress, connectPort);
 
 				socket = new Socket();
-				int attempts = 15;
+				int attempts = 6;
 				for(int i = 1; i <= attempts; i++){
 
 					try{
@@ -314,13 +336,18 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 					}catch(SocketException e){
 					}catch(SocketTimeoutException e){}
 
-					System.out.println("WhAZZUP?");
+					System.out.println("Attempt " + i + " failed.");
 					if(socket.isConnected()){
 						break;
 					}else{
 						if(i == attempts){
 							//TODO Can't Connect
 							System.out.println("Couldn't Connect");
+							handler.post(new Runnable(){
+								@Override
+								public void run() {
+									noConnection();
+								}});
 							return;
 						}else{
 							socket = new Socket();
