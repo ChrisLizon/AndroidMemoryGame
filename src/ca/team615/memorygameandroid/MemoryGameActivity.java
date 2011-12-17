@@ -3,6 +3,8 @@ package ca.team615.memorygameandroid;
 import java.util.Random;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -185,7 +187,7 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 	protected void onResume() {
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 		if(ConfigActivity.getBgMusicEnabled(this)){
-			SoundManager.playLoopedSound(SOUND_BACKGROUND);
+			//SoundManager.playLoopedSound(SOUND_BACKGROUND);
 		}
 		super.onResume();
 	}
@@ -197,8 +199,30 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 		SoundManager.pauseLoopedSound(SOUND_WINNER);
 		super.onPause();
 	}
+	@Override
+	public void onBackPressed() {
+		//TODO Confirm quit
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage("Are you sure you want to exit?")
+		.setCancelable(false)
+		.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				MemoryGameActivity.this.quit();
+			}
+		})
+		.setNegativeButton("No", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				dialog.cancel();
+			}
+		});
+		AlertDialog alert = 
+				builder.create();
+		alert.show();
+	}
 
-
-
+	public void quit(){
+		//TODO disable any music?
+		this.finish();
+	}
 }
 

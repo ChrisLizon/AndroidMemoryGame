@@ -13,7 +13,9 @@ import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -54,14 +56,14 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 
 	InputStream iStream = null;
 	BufferedReader reader = null;
-	
+
 	Socket socket;
 
 	int flippedCards = 0;
-	
+
 	String connectAddress;
 	int connectPort;
-	
+
 	ProgressDialog progressDlg;
 
 	/** Called when the activity is first created. */
@@ -75,7 +77,7 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 		SoundManager.addSound(SOUND_WINNER, R.raw.test2);
 
 		handler = new Handler();
-		
+
 		connectAddress = "";
 		connectPort = 0;
 		try{
@@ -85,7 +87,7 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		
+
 		//TODO THIS NEEDS TO BE A STRING RESOURCE
 		((TextView)this.findViewById(R.id.found_pairs_label)).setText("Your Score");
 		playerPairsLabel=(TextView)NetworkGameActivity.this.findViewById(R.id.pairs_counter);
@@ -113,11 +115,11 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 		for(int i = 0; i < 16; i++){
 			((ImageView)findViewById(viewIds[i])).setImageResource(R.drawable.card_back);
 		}
-		
+
 		//TODO THIS NEEDS TO BE A STRING RESOURCE
 		progressDlg = ProgressDialog.show(this, "Waiting..", "Trying to connect", true);
 		progressDlg.setCancelable(true);
-		
+
 		disableCards();
 		new Thread(new InputHandler()).start();
 
@@ -126,12 +128,42 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 	@Override
 	public void onBackPressed() {
 		//TODO Confirm quit
-		super.onBackPressed();
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage("Are you sure you want to exit?")
+		.setCancelable(false)
+		.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				NetworkGameActivity.this.quit();
+			}
+		})
+		.setNegativeButton("No", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				dialog.cancel();
+			}
+		});
+		//AlertDialog alert = 
+				builder.create();
+		//super.onBackPressed();
+	}
+
+	public void quit(){
+		writer.println("quit");
+		writer.flush();
+		try{
+			iStream.close();
+		}catch(Exception e){}
+		try{
+			oStream.close();
+		}catch(Exception e){}
+		try{
+			socket.close();
+		}catch(Exception e){}
+		this.finish();
 	}
 
 	@Override
 	public void onClick(View v) {
-		
+
 		int index = 0;
 		for(int i = 0; i < 16; i++){
 			if(v.getId() == viewIds[i]){
@@ -194,11 +226,11 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 		((TextView)findViewById(R.id.turn_indicator)).setText(R.string.player_turn);
 		flippedCards = 0;
 	}
-	
+
 	void updateProgress(){
 		progressDlg.setMessage("Waiting for the other player");
 	}
-	
+
 	void removeProgress(){
 		progressDlg.hide();
 	}
@@ -242,7 +274,7 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 	}
 	/** To be called when the socket gets screwed over. */
 	private void connectionClosed(){
-		
+
 	}
 
 	@Override
@@ -250,7 +282,7 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 		//TODO let the server know that the game has lost foreground
 		super.onPause();
 	}
-	
+
 	protected void assignCards(String raw){
 		System.out.println(raw);
 		String[] values = raw.split(" ");
@@ -263,24 +295,24 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 
 	private class InputHandler implements Runnable{
 
-		
+
 		@Override
 		public void run() {
-			
+
 			try {
 				//TODO This probably has to go into a thread
 				System.out.println("Trying to connect to socket");
 				InetSocketAddress addr = new InetSocketAddress(connectAddress, connectPort);
-				
+
 				socket = new Socket();
 				int attempts = 15;
 				for(int i = 1; i <= attempts; i++){
-					
+
 					try{
-					socket.connect(addr, 1000);
+						socket.connect(addr, 1000 * i);
 					}catch(SocketException e){
 					}catch(SocketTimeoutException e){}
-					
+
 					System.out.println("WhAZZUP?");
 					if(socket.isConnected()){
 						break;
@@ -294,7 +326,7 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 						}
 					}
 				}
-				
+
 				System.out.println("Connected to socket");
 			} catch (UnknownHostException e) {
 				// TODO Auto-generated catch block
@@ -319,7 +351,7 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 				public void run() {
 					updateProgress();
 				}});
-			
+
 			while(true){
 				System.out.println("Waiting for a command");
 				String command;
@@ -340,7 +372,7 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 							@Override
 							public void run() {
 								assignCards(buffer);
-								
+
 							}});
 					}else if(command.startsWith("flip")){
 						final int index = Integer.parseInt(command.substring(5, command.length()));
@@ -386,7 +418,7 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 								updateScores(Integer.parseInt(parts[1]), Integer.parseInt(parts[2]));
 							}});
 					}
-					
+
 
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -397,7 +429,7 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 							connectionClosed();
 						}});
 					break;
-					
+
 				}
 
 			}
