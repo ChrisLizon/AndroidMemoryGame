@@ -21,6 +21,8 @@
     <string name="dialog_title_waitin">Waiting..</string>
     <string name="dialog_message_connect">Connecting to the server</string>
     <string name="dialog_message_wait_opponent">Waiting for other player</string>
+    <string name="dialog_message_opponent_quit">Your opponent has quit.</string>
+    <string name="dialog_message_opponent_lost">The connection to your opponent has been lost.</string>
     
     
     <string name="badport">Invalid Port</string>

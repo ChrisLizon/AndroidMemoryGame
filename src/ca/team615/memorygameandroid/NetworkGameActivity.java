@@ -266,6 +266,34 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 	private void draw(){
 
 	}
+	
+	private void opponentLost(){
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(R.string.dialog_message_opponent_lost)
+		.setCancelable(false)
+		.setNeutralButton("Quit", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				NetworkGameActivity.this.quit();
+			}
+		});
+
+		AlertDialog alert =	builder.create();
+		alert.show();
+	}
+	
+	private void opponentQuit(){
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(R.string.dialog_message_opponent_quit)
+		.setCancelable(false)
+		.setNeutralButton("Quit", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				NetworkGameActivity.this.quit();
+			}
+		});
+
+		AlertDialog alert =	builder.create();
+		alert.show();
+	}
 
 	/**
 	 * Update the scores on the screen.
@@ -331,7 +359,10 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 
 	@Override
 	protected void onStop() {
-		progressDlg.dismiss();
+		if(progressDlg != null){
+			progressDlg.dismiss();
+			progressDlg = null;
+		}
 		super.onStop();
 	}
 
@@ -415,6 +446,10 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 				String command;
 				try {
 					command = reader.readLine();
+					if(command == null){
+						if(!quitting);
+						throw new IOException();
+					}
 					if(command.startsWith("quit")){
 						handler.post(new Runnable(){
 							@Override
@@ -477,7 +512,18 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 							@Override
 							public void run() {
 								draw();
-
+							}});
+					}else if(command.startsWith("opponentlost")){
+						handler.post(new Runnable(){
+							@Override
+							public void run() {
+								opponentLost();
+							}});
+					}else if(command.startsWith("opponentquit")){
+						handler.post(new Runnable(){
+							@Override
+							public void run() {
+								opponentQuit();
 							}});
 					}else if(command.startsWith("flop")){
 						final String[] parts = command.split(" ");

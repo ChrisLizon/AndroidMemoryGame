@@ -174,8 +174,8 @@ public class GameHostService extends Service {
 					}
 
 					if(command.startsWith("quit")){
-						writers[clientId].println("quit");
-						writers[clientId].flush();
+						//writers[clientId].println("quit");
+						//writers[clientId].flush();
 						socket.close();
 						writers[opponentId].println("opponentquit");
 						writers[opponentId].flush();

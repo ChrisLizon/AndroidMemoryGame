@@ -31,6 +31,7 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 	private static final int SOUND_FLOP = 2;
 	static final int SOUND_BACKGROUND = 3;
 	private static final int SOUND_WINNER = 4;
+	private static final int SOUND_LOSER = 5;
 
 	private static final int NUM_PAIRS = 8;
 	
@@ -61,6 +62,7 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 		SoundManager.addSound(SOUND_FLIP, R.raw.flip);
 		SoundManager.addSound(SOUND_FLOP, R.raw.flop);
 		SoundManager.addSound(SOUND_WINNER, R.raw.win);
+		SoundManager.addSound(SOUND_LOSER, R.raw.lose);
 
 		handler = new Handler();
 
