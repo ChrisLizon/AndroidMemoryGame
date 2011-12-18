@@ -32,15 +32,15 @@ public class SoundManager {
 
 	protected Context context;
 
-	private SoundManager()
+	private SoundManager(Context context)
 	{
-
+		this.context = context;
 	}
 
 	public static synchronized SoundManager getInstance(Context context) 
 	{
 		if (_instance == null) {
-			_instance = new SoundManager();
+			_instance = new SoundManager(context);
 			initSounds(context);
 		}
 
