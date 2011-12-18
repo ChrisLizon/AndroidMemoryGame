@@ -25,7 +25,7 @@
         android:orientation="vertical" android:layout_gravity="center" android:gravity="center" android:layout_centerInParent="true">
 
         <LinearLayout
-            android:id="@+id/linearLayout2"
+            android:id="@+id/row_0"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:gravity="center_horizontal">
 
@@ -56,7 +56,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linearLayout3"
+            android:id="@+id/row_1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" android:gravity="center">
             
@@ -86,7 +86,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linearLayout4"
+            android:id="@+id/row_2"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" android:gravity="center">
             <ImageView
@@ -115,7 +115,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linearLayout5"
+            android:id="@+id/row_3"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" android:gravity="center">
             
@@ -145,7 +145,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linearLayout1"
+            android:id="@+id/headings_row"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" android:weightSum="2">
 
@@ -167,7 +167,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linearLayout6"
+            android:id="@+id/scores_row"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" android:weightSum="2">
 
@@ -201,6 +201,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/player_turn" android:textColor="#FFFFFF" android:textSize="24sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/outcome_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" android:layout_centerInParent="true" android:gravity="center" android:visibility="gone">
+
+        <TextView
+            android:id="@+id/outcome_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="YOU WIN!" android:textSize="30dip" android:textColor="#EEEEEE"/>
 
     </LinearLayout>
 

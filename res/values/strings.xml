@@ -12,6 +12,10 @@
     <string name="playerscore_label">Your Score</string>
     <string name="opponentscore_label">Opponent\'s Score</string>
     
+    <string name="outcome_win">YOU WIN!</string>
+    <string name="outcome_lose">You Lose!</string>
+    <string name="outcome_draw">Draw!</string>
+    
     <string name="config_backgroundmusic">Enable Background Music</string>
     <string name="config_windowtitle">Memory Game Configuration</string>
 

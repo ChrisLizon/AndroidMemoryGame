@@ -14,8 +14,8 @@ public class MenuActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.menu_layout);
 
-		SoundManager.getInstance();
-		SoundManager.initSounds(getBaseContext());
+		SoundManager.getInstance(getBaseContext());
+		
 		
 		
 		Button singleButton = (Button)findViewById(R.id.single_player_button);

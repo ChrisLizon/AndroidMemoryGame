@@ -41,11 +41,6 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 
 	private ImageView[] imageviews;
 
-	private static final int SOUND_FLIP = 1;
-	private static final int SOUND_FLOP = 2;
-	static final int SOUND_BACKGROUND = 3;
-	static final int SOUND_WINNER = 4;
-
 	/** the number of cards currently face up */
 
 	private TextView playerPairsLabel;
@@ -69,6 +64,9 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 	int connectPort;
 
 	ProgressDialog progressDlg;
+	
+	LinearLayout outcomeLayout;
+	TextView outcomeText;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -93,6 +91,9 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 
 		((TextView)this.findViewById(R.id.turns_label)).setText(R.string.opponentscore_label);
 		opponentPairsLabel=(TextView)NetworkGameActivity.this.findViewById(R.id.turns);
+		
+		outcomeText = (TextView)this.findViewById(R.id.outcome_text);
+		outcomeLayout = (LinearLayout)this.findViewById(R.id.outcome_layout);
 
 		//create a new array to hold the card positions
 		assignments = new int[16];
@@ -192,7 +193,7 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 	void flipCard(int index){
 
 
-		SoundManager.playSound(SOUND_FLIP);
+		SoundManager.playSound(SoundManager.SOUND_FLIP);
 		Log.i(tag, "Showing card " +assignments[index] + " at position " + index);
 		((ImageView)findViewById(viewIds[index])).setImageResource(drawableIds[assignments[index]]);
 		imageviews[index].setFocusable(false);
@@ -241,7 +242,7 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 	 * @param found			if true, hide the cards, if false, show the back
 	 */
 	void flipCardsBack(int currentIndex, int lastIndex, boolean found) { 
-		SoundManager.playSound(SOUND_FLOP);
+		SoundManager.playSound(SoundManager.SOUND_FLOP);
 
 		if(found){
 			((ImageView)findViewById(viewIds[lastIndex])).setVisibility(View.INVISIBLE);
@@ -256,15 +257,19 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 	} 
 
 	private void win(){
-
+		outcomeText.setText(R.string.outcome_win);
+		outcomeLayout.setVisibility(View.VISIBLE);
+		SoundManager.playLoopedSound(SoundManager.SOUND_WINNER);
 	}
 
 	private void lose(){
-
+		outcomeText.setText(R.string.outcome_lose);
+		outcomeLayout.setVisibility(View.VISIBLE);
 	}
 
 	private void draw(){
-
+		outcomeText.setText(R.string.outcome_draw);
+		outcomeLayout.setVisibility(View.VISIBLE);
 	}
 	
 	private void opponentLost(){
@@ -310,10 +315,7 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 	protected void onResume() {
 		super.onResume();
 
-		SoundManager.getInstance();
-		SoundManager.addSound(SOUND_FLIP, R.raw.flip);
-		SoundManager.addSound(SOUND_FLOP, R.raw.flop);
-		//SoundManager.addSound(SOUND_WINNER, R.raw.test2);
+		SoundManager.getInstance(getBaseContext());
 
 		if(socket != null){
 			writer.println("resume");
@@ -359,6 +361,7 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 
 	@Override
 	protected void onStop() {
+		SoundManager.pauseLoopedSound(SoundManager.SOUND_WINNER);
 		if(progressDlg != null){
 			progressDlg.dismiss();
 			progressDlg = null;
@@ -566,7 +569,6 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 		}
 
 	}
-
 
 }
 

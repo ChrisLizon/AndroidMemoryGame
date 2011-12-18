@@ -27,12 +27,6 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 
 	private ImageView[] imageviews;
 
-	private static final int SOUND_FLIP = 1;
-	private static final int SOUND_FLOP = 2;
-	static final int SOUND_BACKGROUND = 3;
-	private static final int SOUND_WINNER = 4;
-	private static final int SOUND_LOSER = 5;
-
 	private static final int NUM_PAIRS = 8;
 	
 
@@ -58,11 +52,7 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.game_screen_layout);
-		SoundManager.getInstance();
-		SoundManager.addSound(SOUND_FLIP, R.raw.flip);
-		SoundManager.addSound(SOUND_FLOP, R.raw.flop);
-		SoundManager.addSound(SOUND_WINNER, R.raw.win);
-		SoundManager.addSound(SOUND_LOSER, R.raw.lose);
+		SoundManager.getInstance(getBaseContext());
 
 		handler = new Handler();
 
@@ -119,7 +109,7 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 		int index = Integer.parseInt((String)v.getTag());
 		System.out.println("index is " + index);
 
-		SoundManager.playSound(SOUND_FLIP);
+		SoundManager.playSound(SoundManager.SOUND_FLIP);
 
 		for(int i =0; i < 16; i++)	{
 			//determine which id we're dealing with
@@ -159,7 +149,7 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 
 	Runnable flipCardsBack = new Runnable() { 
 		public void run() { 
-			SoundManager.playSound(SOUND_FLOP);
+			SoundManager.playSound(SoundManager.SOUND_FLOP);
 			if(assignments[currentIndex] == assignments[lastIndex]){
 				((ImageView)findViewById(viewIds[lastIndex])).setVisibility(View.INVISIBLE);
 				((ImageView)findViewById(viewIds[currentIndex])).setVisibility(View.INVISIBLE);
@@ -168,7 +158,7 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 				foundPairsLabel.setText(String.valueOf(foundPairs));	//Update label of matches
 
 				if(foundPairs == NUM_PAIRS){
-					SoundManager.playLoopedSound(SOUND_WINNER);
+					SoundManager.playLoopedSound(SoundManager.SOUND_WINNER);
 				}
 				
 			}else{
@@ -197,8 +187,8 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onPause() {
 		// TODO Auto-generated method stub
-		SoundManager.pauseLoopedSound(SOUND_BACKGROUND);
-		SoundManager.pauseLoopedSound(SOUND_WINNER);
+		SoundManager.pauseLoopedSound(SoundManager.SOUND_BACKGROUND);
+		SoundManager.pauseLoopedSound(SoundManager.SOUND_WINNER);
 		super.onPause();
 	}
 	@Override

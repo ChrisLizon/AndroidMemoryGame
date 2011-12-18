@@ -5,7 +5,6 @@ import java.util.HashMap;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.SoundPool;
-import android.os.Handler;
 
 /* 
  * Source adapted from
@@ -23,6 +22,12 @@ public class SoundManager {
 	private static float effectVolume = 1.0f;
 	private static float backgroundVolume = 0.4f;
 
+	public static final int SOUND_FLIP = 1;
+	public static final int SOUND_FLOP = 2;
+	public static final int SOUND_BACKGROUND = 3;
+	public static final int SOUND_WINNER = 4;
+	public static final int SOUND_LOSER = 5;
+	
 	private static SoundManager _instance = null;
 
 	private SoundManager()
@@ -30,10 +35,13 @@ public class SoundManager {
 
 	}
 
-	public static synchronized SoundManager getInstance() 
+	public static synchronized SoundManager getInstance(Context context) 
 	{
-		if (_instance == null) 
+		if (_instance == null) {
 			_instance = new SoundManager();
+			initSounds(context);
+		}
+		
 		return _instance;
 	}
 
@@ -42,7 +50,12 @@ public class SoundManager {
 		mSoundPool = new SoundPool(10, AudioManager.STREAM_SYSTEM, 0); 
 		mSoundPoolMap = new HashMap<Integer, Integer>(); 
 		loopedSoundMap = new HashMap<Integer, Integer>();
-		mAudioManager = (AudioManager)mContext.getSystemService(Context.AUDIO_SERVICE); 	     
+		mAudioManager = (AudioManager)mContext.getSystemService(Context.AUDIO_SERVICE); 	 
+		
+		addSound(SOUND_WINNER, R.raw.win);
+		addSound(SOUND_LOSER, R.raw.lose);
+		addSound(SOUND_FLIP, R.raw.flip);
+		addSound(SOUND_FLOP, R.raw.flop);
 	} 
 
 	public static void addSound(int index,int soundID)

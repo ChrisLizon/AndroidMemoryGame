@@ -170,9 +170,8 @@ public class GameHostService extends Service {
 						Log.i(tag, "Reading nothing from player " + clientId + "'s socket");
 						writers[opponentId].println("opponentlost");
 						writers[opponentId].flush();
-						
+						break;
 					}
-
 					if(command.startsWith("quit")){
 						//writers[clientId].println("quit");
 						//writers[clientId].flush();
