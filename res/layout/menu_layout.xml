@@ -27,21 +27,20 @@
             android:id="@+id/high_score_button"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="High Scores" />
+            android:text="High Scores" android:visibility="gone"/>
 
         <Button
             android:id="@+id/menu_settings_button"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Settings"/>
-    </LinearLayout>
 
-    <Button
-        android:id="@+id/info_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:text="i" />
+        <Button
+            android:id="@+id/menu_info_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="About" />
+
+    </LinearLayout>
 
 </RelativeLayout>

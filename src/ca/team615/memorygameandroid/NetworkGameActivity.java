@@ -361,7 +361,6 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 
 	@Override
 	protected void onStop() {
-		SoundManager.pauseLoopedSound(SoundManager.SOUND_WINNER);
 		if(progressDlg != null){
 			progressDlg.dismiss();
 			progressDlg = null;
@@ -371,6 +370,7 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 
 	@Override
 	protected void onPause() {
+		SoundManager.pauseLoopedSound(SoundManager.SOUND_WINNER);
 		if(socket != null){
 			writer.println("pause");
 			writer.flush();

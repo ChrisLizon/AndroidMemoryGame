@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/menubackground" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="Team Members"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#111111" android:paddingBottom="20dip" android:paddingTop="30dip"/>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1"
+        android:layout_centerHorizontal="true"
+        android:text="Rafael Ayala"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#111111" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView2"
+        android:layout_centerHorizontal="true"
+        android:text="Chris Lizon"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#111111" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView3"
+        android:layout_centerHorizontal="true"
+        android:text="Akanksha Sharma"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#111111" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView4"
+        android:text="Ben Waters"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#111111" android:layout_centerHorizontal="true"/>
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView5"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical" android:layout_alignParentBottom="true" android:gravity="center">
+
+        <Button
+            android:id="@+id/web_go_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="http://Team615.mobi"
+            android:width="200dip" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="17dp"
+        android:text="Team615"
+        android:textAppearance="?android:attr/textAppearanceLarge" android:textColor="#111111" android:textSize="30dip" android:layout_centerHorizontal="true"/>
+
+</RelativeLayout>

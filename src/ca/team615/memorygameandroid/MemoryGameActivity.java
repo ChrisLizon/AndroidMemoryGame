@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MemoryGameActivity extends Activity implements OnClickListener {
@@ -158,7 +159,7 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 				foundPairsLabel.setText(String.valueOf(foundPairs));	//Update label of matches
 
 				if(foundPairs == NUM_PAIRS){
-					SoundManager.playLoopedSound(SoundManager.SOUND_WINNER);
+					win();
 				}
 				
 			}else{
@@ -174,7 +175,10 @@ public class MemoryGameActivity extends Activity implements OnClickListener {
 		} 
 	};
 
-
+	private void win(){
+		SoundManager.playLoopedSound(SoundManager.SOUND_WINNER);
+		((LinearLayout)this.findViewById(R.id.outcome_layout)).setVisibility(View.VISIBLE);
+	}
 	@Override
 	protected void onResume() {
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);

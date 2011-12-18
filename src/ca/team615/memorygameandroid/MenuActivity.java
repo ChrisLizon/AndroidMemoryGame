@@ -54,6 +54,18 @@ public class MenuActivity extends Activity {
 			
 		});
 		
+		Button infoButton = (Button)findViewById(R.id.menu_info_button);
+		infoButton.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(MenuActivity.this, InfoActivity.class);
+				MenuActivity.this.startActivity(i);
+				
+			}
+			
+		});
+		
 
 	}
 }
