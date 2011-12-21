@@ -63,6 +63,7 @@ public class GameHostService extends Service {
 		for(int i = 0; i < 16; i++){
 			assignments[i] = -1;
 		}
+		
 
 		Random random = new Random();
 
@@ -127,6 +128,9 @@ public class GameHostService extends Service {
 			try{
 				threads[1].join();
 			}catch(Exception e){}
+			
+			Log.e(tag, "STOPPING SERVER");
+			stopSelf();
 		}
 
 	}
@@ -170,14 +174,22 @@ public class GameHostService extends Service {
 						Log.i(tag, "Reading nothing from player " + clientId + "'s socket");
 						writers[opponentId].println("opponentlost");
 						writers[opponentId].flush();
+						sockets[opponentId].close();
+						sockets[clientId].close();
 						break;
 					}
 					if(command.startsWith("quit")){
 						//writers[clientId].println("quit");
 						//writers[clientId].flush();
+						Log.i(tag, "Client " + clientId + " quit");
 						socket.close();
-						writers[opponentId].println("opponentquit");
-						writers[opponentId].flush();
+						//if(clientId == 0){
+							serverSocket.close();
+						
+							writers[opponentId].println("opponentquit");
+							writers[opponentId].flush();
+							sockets[opponentId].close();
+						
 						break;
 					}else if(command.startsWith("pause")){
 						writers[opponentId].println("opponentpause");
@@ -246,7 +258,10 @@ public class GameHostService extends Service {
 				writers[opponent].println("flop " + currentIndex + " " + lastIndex);
 			}
 			if(foundPairs == 8){
-				if(scores[client] > scores[opponent]){
+				if(scores[client] == scores[opponent]){
+					writers[client].println("draw");
+					writers[opponent].println("draw");
+				}else if(scores[client] > scores[opponent]){
 					writers[client].println("win");
 					writers[opponent].println("lose");
 				}else{

@@ -265,6 +265,7 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 	private void lose(){
 		outcomeText.setText(R.string.outcome_lose);
 		outcomeLayout.setVisibility(View.VISIBLE);
+		SoundManager.playSound(SoundManager.SOUND_LOSER);
 	}
 
 	private void draw(){
