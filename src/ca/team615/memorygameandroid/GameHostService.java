@@ -171,12 +171,7 @@ public class GameHostService extends Service {
 				try {
 					String command = reader.readLine();
 					if(command == null){
-						Log.i(tag, "Reading nothing from player " + clientId + "'s socket");
-						writers[opponentId].println("opponentlost");
-						writers[opponentId].flush();
-						sockets[opponentId].close();
-						sockets[clientId].close();
-						break;
+						throw new IOException();
 					}
 					if(command.startsWith("quit")){
 						//writers[clientId].println("quit");
@@ -204,8 +199,16 @@ public class GameHostService extends Service {
 					}
 
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					Log.i(tag, "Reading nothing from player " + clientId + "'s socket");
+					writers[opponentId].println("opponentlost");
+					writers[opponentId].flush();
+					try{
+					sockets[opponentId].close();
+					}catch(Exception ef){}
+					try{
+					sockets[clientId].close();
+					}catch(Exception ef){}
+					break;
 				}
 
 			}

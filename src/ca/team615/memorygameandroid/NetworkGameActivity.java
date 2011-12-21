@@ -47,6 +47,7 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 	private TextView opponentPairsLabel;
 
 	boolean quitting = false;
+	boolean lostOpponent = false;
 
 	Handler handler;
 
@@ -64,7 +65,7 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 	int connectPort;
 
 	ProgressDialog progressDlg;
-	
+
 	LinearLayout outcomeLayout;
 	TextView outcomeText;
 
@@ -91,7 +92,7 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 
 		((TextView)this.findViewById(R.id.turns_label)).setText(R.string.opponentscore_label);
 		opponentPairsLabel=(TextView)NetworkGameActivity.this.findViewById(R.id.turns);
-		
+
 		outcomeText = (TextView)this.findViewById(R.id.outcome_text);
 		outcomeLayout = (LinearLayout)this.findViewById(R.id.outcome_layout);
 
@@ -272,7 +273,7 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 		outcomeText.setText(R.string.outcome_draw);
 		outcomeLayout.setVisibility(View.VISIBLE);
 	}
-	
+
 	private void opponentLost(){
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage(R.string.dialog_message_opponent_lost)
@@ -286,8 +287,9 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 		AlertDialog alert =	builder.create();
 		alert.show();
 	}
-	
+
 	private void opponentQuit(){
+		lostOpponent = true;
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage(R.string.dialog_message_opponent_quit)
 		.setCancelable(false)
@@ -326,20 +328,21 @@ public class NetworkGameActivity extends Activity implements OnClickListener {
 
 	/** To be called when the socket gets screwed over. */
 	private void connectionClosed(){
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage(R.string.network_lostconnection)
-		.setCancelable(false)
-		.setNeutralButton("Quit", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				NetworkGameActivity.this.finish();
-			}
-		});
+		if(!lostOpponent){
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage(R.string.network_lostconnection)
+			.setCancelable(false)
+			.setNeutralButton("Quit", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					NetworkGameActivity.this.finish();
+				}
+			});
 
-		AlertDialog alert =	builder.create();
-		if(progressDlg != null)
-			progressDlg.dismiss();
-		alert.show();
-
+			AlertDialog alert =	builder.create();
+			if(progressDlg != null)
+				progressDlg.dismiss();
+			alert.show();
+		}
 	}
 
 	/** To be called when there's not connection to the server */
